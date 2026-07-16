@@ -1,0 +1,67 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Department;
+use Illuminate\Http\Request;
+
+class DepartmentController extends Controller
+{
+    public function index(Request $request)
+    {
+        $query = Department::withCount('employees');
+
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%'.$request->input('search').'%');
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->input('status'));
+        }
+
+        $departments = $query->latest()->paginate(10)->withQueryString();
+
+        return view('departments.index', compact('departments'));
+    }
+
+    public function create()
+    {
+        return view('departments.create');
+    }
+
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'status' => 'required|in:active,inactive',
+        ]);
+        Department::create($data);
+
+        return redirect()->route('departments.index')->with('success', 'Department created.');
+    }
+
+    public function edit(Department $department)
+    {
+        return view('departments.edit', compact('department'));
+    }
+
+    public function update(Request $request, Department $department)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'status' => 'required|in:active,inactive',
+        ]);
+        $department->update($data);
+
+        return redirect()->route('departments.index')->with('success', 'Department updated.');
+    }
+
+    public function destroy(Department $department)
+    {
+        $department->delete();
+
+        return redirect()->route('departments.index')->with('success', 'Department deleted.');
+    }
+}
