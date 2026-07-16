@@ -74,6 +74,13 @@ class PayrollController extends Controller
         return view('payroll.show', compact('payroll'));
     }
 
+    public function print(Payroll $payroll)
+    {
+        $payroll->load(['employee.department', 'user']);
+
+        return view('payroll.print', compact('payroll'));
+    }
+
     public function markPaid(Payroll $payroll)
     {
         if ($payroll->status === 'paid') {

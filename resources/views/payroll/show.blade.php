@@ -10,10 +10,12 @@
 <tr class="fw-bold"><td>Net Salary</td><td class="text-end">${{ number_format($payroll->net_salary,2) }}</td></tr>
 @if($payroll->paid_at)<tr><td>Paid On</td><td class="text-end">{{ $payroll->paid_at->format('M d, Y') }}</td></tr>@endif
 </table>
+<div class="d-flex gap-2 flex-wrap">
+<a href="{{ route('payroll.print',$payroll) }}" target="_blank" class="btn btn-outline-primary"><i class="fa-solid fa-print"></i> Print Payslip</a>
 @if($payroll->status!=='paid')
-<form method="POST" action="{{ route('payroll.paid',$payroll) }}">@csrf @method('PATCH')<button class="btn btn-success">Mark as Paid</button> <a href="{{ route('payroll.index') }}" class="btn btn-light">Back</a></form>
-@else
-<a href="{{ route('payroll.index') }}" class="btn btn-light">Back</a>
+<form method="POST" action="{{ route('payroll.paid',$payroll) }}" class="d-inline">@csrf @method('PATCH')<button class="btn btn-success">Mark as Paid</button></form>
 @endif
+<a href="{{ route('payroll.index') }}" class="btn btn-light">Back</a>
+</div>
 </div>
 @endsection

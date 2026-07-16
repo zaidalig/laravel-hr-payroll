@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Company Owner', 'email' => 'owner@example.com', 'password' => 'password', 'role' => 'owner', 'status' => 'active'],
             ['name' => 'HR Manager', 'email' => 'hr@example.com', 'password' => 'password', 'role' => 'hr', 'status' => 'active'],
             ['name' => 'Chief Accountant', 'email' => 'accountant@example.com', 'password' => 'password', 'role' => 'accountant', 'status' => 'active'],
-            ['name' => 'Read Only', 'email' => 'viewer@example.com', 'password' => 'password', 'role' => 'viewer', 'status' => 'active'],
+            ['name' => 'Read Only', 'email' => 'viewer@example.com', 'password' => 'password', 'role' => 'viewer', 'status' => 'inactive'],
         ];
 
         foreach ($users as $user) {

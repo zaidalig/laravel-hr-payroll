@@ -10,7 +10,7 @@
 @forelse($payrolls as $p)
 <tr><td>{{ $p->employee->name }}</td><td>{{ $p->period }}</td><td>${{ number_format($p->base_salary,2) }}</td><td>${{ number_format($p->allowances,2) }}</td><td>${{ number_format($p->deductions,2) }}</td><td class="fw-bold">${{ number_format($p->net_salary,2) }}</td>
 <td><span class="badge {{ $p->status==='paid'?'bg-success-subtle text-success':'bg-warning-subtle text-warning' }}">{{ ucfirst($p->status) }}</span></td>
-<td class="text-end"><a href="{{ route('payroll.show',$p) }}" class="btn btn-sm btn-outline-info"><i class="fa-solid fa-eye"></i></a>
+<td class="text-end"><a href="{{ route('payroll.show',$p) }}" class="btn btn-sm btn-outline-info"><i class="fa-solid fa-eye"></i></a> <a href="{{ route('payroll.print',$p) }}" target="_blank" class="btn btn-sm btn-outline-secondary" title="Print Payslip"><i class="fa-solid fa-print"></i></a>
 @if($p->status!=='paid')
 <form method="POST" action="{{ route('payroll.paid',$p) }}" class="d-inline">@csrf @method('PATCH')<button class="btn btn-sm btn-outline-success" title="Mark Paid"><i class="fa-solid fa-check"></i></button></form>
 <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-url="{{ route('payroll.destroy',$p) }}" data-name="payroll {{ $p->period }}"><i class="fa-solid fa-trash"></i></button>
