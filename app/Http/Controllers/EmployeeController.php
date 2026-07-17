@@ -30,7 +30,8 @@ class EmployeeController extends Controller
             $query->where('status', $request->input('status'));
         }
 
-        $employees = $query->latest()->paginate(10)->withQueryString();
+        [$sort, $direction] = $this->tableSort($request, ['created_at', 'name', 'employee_code', 'designation', 'status']);
+        $employees = $query->orderBy($sort, $direction)->paginate($this->tablePerPage($request))->withQueryString();
         $departments = Department::where('status', 'active')->orderBy('name')->get();
 
         return view('employees.index', compact('employees', 'departments'));

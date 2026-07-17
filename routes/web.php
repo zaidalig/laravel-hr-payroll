@@ -31,11 +31,12 @@ Route::middleware(['auth', 'active.user'])->group(function () {
     Route::middleware('can:manage-payroll')->group(function () {
         Route::resource('payroll', PayrollController::class)->only(['index', 'create', 'store', 'show', 'destroy']);
         Route::patch('payroll/{payroll}/paid', [PayrollController::class, 'markPaid'])->name('payroll.paid');
+        Route::get('payroll/{payroll}/print', [PayrollController::class, 'print'])->name('payroll.print');
     });
 
     Route::middleware('can:manage-users')->group(function () {
         Route::resource('users', UserController::class)->except(['show']);
     });
 
-    Route::get('activity-logs', [ActivityLogController::class, 'index'])->name('activity.index');
+    Route::get('activity-logs', [ActivityLogController::class, 'index'])->middleware('can:manage-users')->name('activity.index');
 });

@@ -24,7 +24,8 @@ class AttendanceController extends Controller
             $query->where('status', $request->input('status'));
         }
 
-        $attendances = $query->latest('attendance_date')->paginate(15)->withQueryString();
+        [$sort, $direction] = $this->tableSort($request, ['created_at', 'attendance_date', 'status'], 'created_at');
+        $attendances = $query->orderBy($sort, $direction)->paginate($this->tablePerPage($request))->withQueryString();
         $employees = Employee::where('status', 'active')->orderBy('name')->get();
 
         return view('attendance.index', compact('attendances', 'employees'));

@@ -20,7 +20,8 @@ class LeaveRequestController extends Controller
             $query->where('employee_id', $request->input('employee_id'));
         }
 
-        $leaves = $query->latest()->paginate(10)->withQueryString();
+        [$sort, $direction] = $this->tableSort($request, ['created_at', 'start_date', 'status']);
+        $leaves = $query->orderBy($sort, $direction)->paginate($this->tablePerPage($request))->withQueryString();
         $employees = Employee::where('status', 'active')->orderBy('name')->get();
 
         return view('leaves.index', compact('leaves', 'employees'));
