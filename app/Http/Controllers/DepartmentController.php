@@ -19,7 +19,8 @@ class DepartmentController extends Controller
             $query->where('status', $request->input('status'));
         }
 
-        $departments = $query->latest()->paginate(10)->withQueryString();
+        [$sort, $direction] = $this->tableSort($request, ['created_at', 'name', 'status']);
+        $departments = $query->orderBy($sort, $direction)->paginate($this->tablePerPage($request))->withQueryString();
 
         return view('departments.index', compact('departments'));
     }
